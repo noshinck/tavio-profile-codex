@@ -17,7 +17,7 @@ initializeDatabase();
 
 const port = Number(process.env.PORT || 3000);
 const googleSheetsLeadUrl =
-  "https://script.google.com/macros/s/AKfycbwAyCtGcjmj70mwKPeVugMxFO-T9qRE7Xx-GBlVq3FK5w25EVrmfnK5CSMyiiXGAYE/exec";
+  "https://script.google.com/macros/s/AKfycbxipnzHxNs_5dXazkI7SCYqa_DtIa4ZFUMHgtnlRU8MV7rltMns3cynA0WosnXX6ooX/exec";
 
 function escapeHtml(value) {
   return String(value).replace(/[&<>"']/g, (char) => {
@@ -1831,8 +1831,11 @@ function renderProfile(card, views) {
           if (shareStatus) shareStatus.textContent = "";
 
           try {
-            await fetch("https://script.google.com/macros/s/AKfycbxlrvc3Bz1x-I7YvjJnacm18VPQKWP3lXlugEmV6k9b7ZjJiGw_GqVov5omU5uDVaLh/exec", {
+            await fetch("/api/save-contact", {
               method: "POST",
+              headers: {
+                "Content-Type": "application/json"
+              },
               body: JSON.stringify({
                 name,
                 phone,
@@ -1840,15 +1843,15 @@ function renderProfile(card, views) {
               })
             });
 
+            if (shareStatus) shareStatus.textContent = "Saved ✅ You're now connected";
             incrementStat("tavio_saves");
             const form = document.getElementById("share-back-form");
             if (form) form.reset();
-            if (shareStatus) shareStatus.textContent = "Saved ✅ You're now connected";
-            alert("Saved ✅");
+            alert("Saved successfully");
           } catch (err) {
             console.error(err);
             if (shareStatus) shareStatus.textContent = "Something went wrong ❌";
-            alert("Network error ❌");
+            alert("Network error");
           } finally {
             isSharing = false;
             if (shareButton) shareButton.disabled = false;
@@ -2649,7 +2652,7 @@ const server = http.createServer((request, response) => {
     return;
   }
 
-  if (request.method === "POST" && pathname === "/api/share-contact") {
+  if (request.method === "POST" && pathname === "/api/save-contact") {
     readRequestBody(request)
       .then(async (rawBody) => {
         let payload;
@@ -2675,7 +2678,7 @@ const server = http.createServer((request, response) => {
         const googleResponse = await fetch(googleSheetsLeadUrl, {
           method: "POST",
           headers: {
-            "Content-Type": "application/json"
+            "Content-Type": "text/plain;charset=utf-8"
           },
           body: JSON.stringify({
             name,
@@ -2684,12 +2687,6 @@ const server = http.createServer((request, response) => {
           }),
           redirect: "follow"
         });
-
-        if (!googleResponse.ok) {
-          response.writeHead(502, { "Content-Type": "application/json; charset=utf-8" });
-          response.end(JSON.stringify({ ok: false }));
-          return;
-        }
 
         response.writeHead(200, { "Content-Type": "application/json; charset=utf-8" });
         response.end(JSON.stringify({ ok: true }));
