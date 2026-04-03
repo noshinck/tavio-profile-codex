@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Analytics Dashboard</title>
+    <link rel="stylesheet" href="./style.css" />
+  </head>
+  <body>
+    <div class="ambient-background" aria-hidden="true">
+      <div class="ambient-orb one"></div>
+      <div class="ambient-orb two"></div>
+      <div class="ambient-orb three"></div>
+    </div>
+
+    <div class="page-shell">
+      <div class="back-link-row">
+        <button class="inline-button" id="back-to-profile" type="button">&larr; Back to Profile</button>
+      </div>
+
+      <section class="panel panel-wide">
+        <div class="dashboard-shell">
+          <div class="dashboard-header">
+            <h1 class="dashboard-title">Analytics Dashboard</h1>
+            <p class="dashboard-subtitle">Views, saves, and action clicks are tracked with localStorage and stay frontend-only.</p>
+          </div>
+
+          <div class="analytics-grid" aria-label="Analytics">
+            <div class="dashboard-card">
+              <div class="dashboard-label">Views</div>
+              <div class="dashboard-value" id="views-count">0</div>
+              <div class="dashboard-note">How many times this profile was opened in the browser.</div>
+            </div>
+            <div class="dashboard-card">
+              <div class="dashboard-label">Saves</div>
+              <div class="dashboard-value" id="saves-count">0</div>
+              <div class="dashboard-note">vCard saves and shared contact saves recorded locally.</div>
+            </div>
+            <div class="dashboard-card">
+              <div class="dashboard-label">Actions</div>
+              <div class="dashboard-value" id="clicks-count">0</div>
+              <div class="dashboard-note">Call, email, WhatsApp, and social link clicks.</div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <script>
+      (function () {
+        var storageKeys = {
+          profile: 'tavio_profile_static',
+          views: 'tavio_views',
+          saves: 'tavio_saves',
+          clicks: 'tavio_clicks'
+        };
+
+        var themeOptions = [
+          { key: 'red', color: '#ef4444' },
+          { key: 'blue', color: '#6f86ff' },
+          { key: 'green', color: '#22c55e' },
+          { key: 'purple', color: '#8b5cf6' },
+          { key: 'orange', color: '#f97316' }
+        ];
+
+        function readStat(key) {
+          var value = Number.parseInt(localStorage.getItem(key) || '0', 10);
+          return Number.isNaN(value) ? 0 : value;
+        }
+
+        function hexToRgb(hex) {
+          var normalized = String(hex || '').replace('#', '');
+          var value = normalized.length === 3
+            ? normalized.split('').map(function (char) { return char + char; }).join('')
+            : normalized;
+          var int = Number.parseInt(value, 16);
+          if (Number.isNaN(int)) {
+            return '111, 134, 255';
+          }
+          return [(int >> 16) & 255, (int >> 8) & 255, int & 255].join(', ');
+        }
+
+        function getThemeColor(themeName) {
+          var match = themeOptions.find(function (item) {
+            return item.key === themeName;
+          });
+          return match ? match.color : '#6f86ff';
+        }
+
+        function applyThemeToRoot(themeName) {
+          var color = getThemeColor(themeName);
+          document.documentElement.style.setProperty('--theme-accent', color);
+          document.documentElement.style.setProperty('--theme-accent-rgb', hexToRgb(color));
+        }
+
+        function installTapFeedback() {
+          var selector = '.primary-button, .action-button, .inline-button, .social-button, .color-dot, .chip-remove, .edit-trigger';
+          var activeElement = null;
+
+          function clearActive(target) {
+            if (target) {
+              target.classList.remove('tap-active');
+            }
+          }
+
+          document.addEventListener('pointerdown', function (event) {
+            var target = event.target.closest(selector);
+            if (!target) {
+              return;
+            }
+            clearActive(activeElement);
+            activeElement = target;
+            target.classList.add('tap-active');
+          }, { passive: true });
+
+          ['pointerup', 'pointercancel', 'pointerleave'].forEach(function (eventName) {
+            document.addEventListener(eventName, function () {
+              clearActive(activeElement);
+              activeElement = null;
+            }, { passive: true });
+          });
+
+          document.addEventListener('click', function (event) {
+            var target = event.target.closest(selector);
+            if (!target) {
+              return;
+            }
+            target.classList.add('tap-active');
+            window.clearTimeout(target.__tapTimer);
+            target.__tapTimer = window.setTimeout(function () {
+              target.classList.remove('tap-active');
+            }, 160);
+          });
+        }
+
+        try {
+          var savedProfile = JSON.parse(localStorage.getItem(storageKeys.profile) || '{}');
+          applyThemeToRoot(savedProfile.themeColor || 'blue');
+        } catch (error) {
+          applyThemeToRoot('blue');
+        }
+
+        installTapFeedback();
+
+        document.getElementById('views-count').textContent = String(readStat(storageKeys.views));
+        document.getElementById('saves-count').textContent = String(readStat(storageKeys.saves));
+        document.getElementById('clicks-count').textContent = String(readStat(storageKeys.clicks));
+
+        document.getElementById('back-to-profile').addEventListener('click', function () {
+          window.location.href = 'index.html';
+        });
+      })();
+    </script>
+  </body>
+</html>

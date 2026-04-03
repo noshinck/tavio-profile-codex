@@ -1,0 +1,648 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Edit Profile</title>
+    <link rel="stylesheet" href="./style.css" />
+  </head>
+  <body>
+    <div class="ambient-background" aria-hidden="true">
+      <div class="ambient-orb one"></div>
+      <div class="ambient-orb two"></div>
+      <div class="ambient-orb three"></div>
+    </div>
+
+    <div class="page-shell">
+      <div class="back-link-row">
+        <button class="inline-button" id="back-to-profile" type="button">&larr; Back to Profile</button>
+      </div>
+
+      <section class="panel panel-wide">
+        <div class="dashboard-shell">
+          <div class="dashboard-header">
+            <h1 class="dashboard-title">Edit Profile</h1>
+            <p class="dashboard-subtitle">Update your public card details and preview changes live.</p>
+          </div>
+          <div class="edit-grid">
+            <div class="edit-column">
+              <div class="dashboard-card edit-form-card">
+                <form class="form edit-form" id="edit-profile-form">
+                  <section class="form-section">
+                    <p class="section-title">Bio</p>
+                    <label class="field"><span class="field-label">Name</span><input class="input" name="name" type="text" placeholder="Full name" /></label>
+                    <label class="field"><span class="field-label">Role</span><input class="input" name="role" type="text" placeholder="Role" /></label>
+                    <label class="field"><span class="field-label">Headline</span><input class="input" name="headline" type="text" placeholder="Tap to save contact instantly." /></label>
+                    <label class="field"><span class="field-label">Company</span><input class="input" name="company" type="text" placeholder="Grovix" /></label>
+                    <label class="field"><span class="field-label">Location</span><input class="input" name="location" type="text" placeholder="Bangalore, India" /></label>
+                    <label class="field"><span class="field-label">Phone</span><input class="input" name="phone" type="tel" placeholder="Phone" /></label>
+                    <label class="field"><span class="field-label">Email</span><input class="input" name="email" type="email" placeholder="Email" /></label>
+                    <label class="field"><span class="field-label">Profile Initial</span><input class="input" name="profileInitial" type="text" maxlength="2" placeholder="NN" /></label>
+                    <label class="field"><span class="field-label">Upload Profile Image</span><input class="input" name="profileImageUpload" type="file" accept="image/*" /></label>
+                    <label class="field"><span class="field-label">Profile Image Zoom</span><input class="input range-input" name="profileImageScale" type="range" min="1" max="2.2" step="0.01" /></label>
+                    <label class="field"><span class="field-label">Profile Image Position</span><input class="input range-input" name="profileImageOffsetY" type="range" min="-32" max="32" step="1" /></label>
+                    <label class="field"><span class="field-label">Upload Banner Image</span><input class="input" name="bannerImageUpload" type="file" accept="image/*" /></label>
+                  </section>
+
+                  <section class="form-section">
+                    <p class="section-title">Skills</p>
+                    <div class="skills-builder">
+                      <div class="skills-input-row">
+                        <input class="input" id="skill-input" type="text" placeholder="Add a skill" />
+                        <button class="inline-button" id="add-skill-button" type="button">Add</button>
+                      </div>
+                      <div class="skills-row" id="editor-skills"></div>
+                    </div>
+                  </section>
+
+                  <section class="form-section">
+                    <p class="section-title">Social Links</p>
+                    <label class="field"><span class="field-label">Instagram</span><input class="input" name="instagram" type="url" placeholder="https://instagram.com/..." /></label>
+                    <label class="field"><span class="field-label">LinkedIn</span><input class="input" name="linkedin" type="url" placeholder="https://linkedin.com/in/..." /></label>
+                    <label class="field"><span class="field-label">Twitter (X)</span><input class="input" name="twitter" type="url" placeholder="https://x.com/..." /></label>
+                    <label class="field"><span class="field-label">YouTube</span><input class="input" name="youtube" type="url" placeholder="https://youtube.com/..." /></label>
+                    <label class="field"><span class="field-label">Facebook</span><input class="input" name="facebook" type="url" placeholder="https://facebook.com/..." /></label>
+                    <label class="field"><span class="field-label">Website</span><input class="input" name="website" type="url" placeholder="https://example.com" /></label>
+                    <label class="field"><span class="field-label">GitHub</span><input class="input" name="github" type="url" placeholder="https://github.com/..." /></label>
+                    <label class="field"><span class="field-label">Telegram</span><input class="input" name="telegram" type="url" placeholder="https://t.me/..." /></label>
+                    <label class="field"><span class="field-label">Snapchat</span><input class="input" name="snapchat" type="url" placeholder="https://snapchat.com/add/..." /></label>
+                    <label class="field"><span class="field-label">Portfolio link</span><input class="input" name="portfolio" type="url" placeholder="https://portfolio.com" /></label>
+                  </section>
+
+                  <section class="form-section">
+                    <p class="section-title">Style</p>
+                    <div class="color-grid" id="theme-color-grid"></div>
+                  </section>
+
+                  <button class="primary-button edit-save-button" type="submit">Save Profile</button>
+                  <div class="share-status" id="edit-save-status"></div>
+                </form>
+              </div>
+            </div>
+
+            <div class="edit-column preview-column">
+              <div class="preview-wrap">
+                <div class="dashboard-card preview-card">
+                  <div class="field-label">Live Preview</div>
+                  <div class="profile-block preview-fade" id="edit-preview-block" style="margin-top: 18px;">
+                    <div class="identity-banner" id="edit-preview-banner">
+                      <img class="banner-image" id="edit-preview-banner-image" alt="" />
+                      <button class="edit-trigger" type="button" aria-label="Edit Profile" title="Edit Profile">
+                        <span class="icon" id="preview-edit-icon"></span>
+                      </button>
+                    </div>
+                    <div class="identity-avatar-wrap">
+                      <div class="avatar" id="edit-preview-avatar">
+                        <img class="avatar-image" id="edit-preview-avatar-image" alt="" />
+                        <span class="avatar-text" id="edit-preview-avatar-text">NN</span>
+                      </div>
+                    </div>
+                    <div class="identity-stack">
+                      <h2 class="profile-name" id="edit-preview-name">noshin naved ck</h2>
+                      <div class="role" id="edit-preview-role">ceo</div>
+                      <div class="company identity-line is-empty" id="edit-preview-company"></div>
+                      <div class="headline identity-line" id="edit-preview-headline">Tap to save contact instantly.</div>
+                      <div class="location identity-line is-empty" id="edit-preview-location"></div>
+                      <div class="skills-row" id="edit-preview-skills" style="display: none;"></div>
+                    </div>
+                    <div class="bio" id="edit-preview-contact">+91 98765 43210 • noshin@example.com</div>
+                    <div class="social-grid" id="edit-preview-socials" style="margin-top: 16px; display: none;"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <script>
+      (function () {
+        var icons = {
+          instagram: '<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4.5" y="4.5" width="15" height="15" rx="4"></rect><circle cx="12" cy="12" r="3.5"></circle><circle cx="17" cy="7" r="0.8" fill="currentColor" stroke="none"></circle></svg>',
+          linkedin: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 9v8"></path><path d="M12 17v-4.5a2.5 2.5 0 0 1 5 0V17"></path><path d="M12 9v8"></path><circle cx="7" cy="6.8" r="1"></circle></svg>',
+          twitter: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 5 19 19"></path><path d="M19 5 5 19"></path></svg>',
+          youtube: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21 12s0-3.2-.4-4.7a2.5 2.5 0 0 0-1.8-1.8C17.3 5 12 5 12 5s-5.3 0-6.8.5a2.5 2.5 0 0 0-1.8 1.8C3 8.8 3 12 3 12s0 3.2.4 4.7a2.5 2.5 0 0 0 1.8 1.8C6.7 19 12 19 12 19s5.3 0 6.8-.5a2.5 2.5 0 0 0 1.8-1.8C21 15.2 21 12 21 12Z"></path><path d="m10 9 5 3-5 3z"></path></svg>',
+          facebook: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M13 20v-7h2.5l.5-3H13V8.3c0-.9.3-1.5 1.6-1.5H16V4.1c-.3 0-1.2-.1-2.3-.1-2.3 0-3.8 1.4-3.8 4V10H7v3h2.9v7"></path></svg>',
+          website: '<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8"></circle><path d="M4 12h16"></path><path d="M12 4a12 12 0 0 1 0 16"></path><path d="M12 4a12 12 0 0 0 0 16"></path></svg>',
+          github: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 18c-4 1.2-4-2-5.5-2.5"></path><path d="M14.5 21v-3a2.6 2.6 0 0 0-.8-2c2.7-.3 5.5-1.3 5.5-6A4.7 4.7 0 0 0 18 6.8 4.3 4.3 0 0 0 17.9 4s-1 0-3.4 1.6a11.7 11.7 0 0 0-6 0C6.1 4 5.1 4 5.1 4A4.3 4.3 0 0 0 5 6.8 4.7 4.7 0 0 0 3.8 10c0 4.7 2.8 5.7 5.5 6a2.6 2.6 0 0 0-.8 2v3"></path></svg>',
+          telegram: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="m21 4-3 15-5-4-3 2 1-5 10-8-13 5 3 1"></path></svg>',
+          snapchat: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4c2.6 0 4.5 2 4.5 4.7v2.1c0 .4.2.7.5.9.4.3 1 .6 1.5.7-.3.6-.9 1-1.7 1.2-.4.1-.6.4-.7.8-.2 1-.8 1.8-1.8 2.1-.7.2-1.3.3-2.3.3s-1.6-.1-2.3-.3c-1-.3-1.6-1.1-1.8-2.1-.1-.4-.3-.7-.7-.8-.8-.2-1.4-.6-1.7-1.2.5-.1 1.1-.4 1.5-.7.3-.2.5-.5.5-.9V8.7C7.5 6 9.4 4 12 4Z"></path></svg>',
+          portfolio: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16v10H4z"></path><path d="M9 7V6a3 3 0 0 1 3-3h0a3 3 0 0 1 3 3v1"></path><path d="M4 11h16"></path></svg>',
+          edit: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="m4 20 4.2-1 9.3-9.3a1.8 1.8 0 0 0 0-2.6l-.6-.6a1.8 1.8 0 0 0-2.6 0L5 15.8 4 20Z"></path><path d="M13.5 7.5 16.5 10.5"></path></svg>'
+        };
+
+        var socialConfig = [
+          { key: 'instagram', label: 'Instagram', icon: 'instagram' },
+          { key: 'linkedin', label: 'LinkedIn', icon: 'linkedin' },
+          { key: 'twitter', label: 'Twitter', icon: 'twitter' },
+          { key: 'youtube', label: 'YouTube', icon: 'youtube' },
+          { key: 'facebook', label: 'Facebook', icon: 'facebook' },
+          { key: 'website', label: 'Website', icon: 'website' },
+          { key: 'github', label: 'GitHub', icon: 'github' },
+          { key: 'telegram', label: 'Telegram', icon: 'telegram' },
+          { key: 'snapchat', label: 'Snapchat', icon: 'snapchat' },
+          { key: 'portfolio', label: 'Portfolio', icon: 'portfolio' }
+        ];
+
+        var themeOptions = [
+          { key: 'red', color: '#ef4444' },
+          { key: 'blue', color: '#6f86ff' },
+          { key: 'green', color: '#22c55e' },
+          { key: 'purple', color: '#8b5cf6' },
+          { key: 'orange', color: '#f97316' }
+        ];
+
+        var storageKeys = { profile: 'tavio_profile_static' };
+
+        var defaultProfile = {
+          name: 'noshin naved ck',
+          role: 'ceo',
+          headline: 'Tap to save contact instantly.',
+          company: '',
+          location: '',
+          phone: '+91 98765 43210',
+          email: 'noshin@example.com',
+          profileInitial: '',
+          profileImage: '',
+          bannerImage: '',
+          profileImageScale: 1,
+          profileImageOffsetY: 0,
+          skills: [],
+          themeColor: 'blue',
+          socials: {
+            instagram: 'https://instagram.com/noshin',
+            linkedin: 'https://linkedin.com/in/noshin',
+            twitter: '',
+            youtube: '',
+            facebook: '',
+            website: 'https://example.com',
+            github: 'https://github.com/noshin',
+            telegram: '',
+            snapchat: '',
+            portfolio: 'https://example.com/portfolio'
+          }
+        };
+
+        function setIcon(id, iconName) {
+          var element = document.getElementById(id);
+          if (element) {
+            element.innerHTML = icons[iconName] || '';
+          }
+        }
+
+        function installTapFeedback() {
+          var selector = '.primary-button, .action-button, .inline-button, .social-button, .color-dot, .chip-remove, .edit-trigger';
+          var activeElement = null;
+
+          function clearActive(target) {
+            if (target) {
+              target.classList.remove('tap-active');
+            }
+          }
+
+          document.addEventListener('pointerdown', function (event) {
+            var target = event.target.closest(selector);
+            if (!target) {
+              return;
+            }
+            clearActive(activeElement);
+            activeElement = target;
+            target.classList.add('tap-active');
+          }, { passive: true });
+
+          ['pointerup', 'pointercancel', 'pointerleave'].forEach(function (eventName) {
+            document.addEventListener(eventName, function () {
+              clearActive(activeElement);
+              activeElement = null;
+            }, { passive: true });
+          });
+
+          document.addEventListener('click', function (event) {
+            var target = event.target.closest(selector);
+            if (!target) {
+              return;
+            }
+            target.classList.add('tap-active');
+            window.clearTimeout(target.__tapTimer);
+            target.__tapTimer = window.setTimeout(function () {
+              target.classList.remove('tap-active');
+            }, 160);
+          });
+        }
+
+        function cloneProfile(profile) {
+          return JSON.parse(JSON.stringify(profile));
+        }
+
+        function mergeProfile(stored) {
+          var merged = cloneProfile(defaultProfile);
+          var source = stored && typeof stored === 'object' ? stored : {};
+          var key;
+          for (key in source) {
+            if (key !== 'socials' && key !== 'skills') {
+              merged[key] = source[key];
+            }
+          }
+          merged.skills = Array.isArray(source.skills) ? source.skills.slice() : [];
+          merged.socials = cloneProfile(defaultProfile.socials);
+          if (source.socials && typeof source.socials === 'object') {
+            for (key in source.socials) {
+              merged.socials[key] = source.socials[key];
+            }
+          }
+          if (!merged.themeColor) {
+            merged.themeColor = 'blue';
+          }
+          if (!merged.profileImageScale) {
+            merged.profileImageScale = 1;
+          }
+          if (!Number.isFinite(merged.profileImageOffsetY)) {
+            merged.profileImageOffsetY = 0;
+          }
+          return merged;
+        }
+
+        function loadProfile() {
+          try {
+            return mergeProfile(JSON.parse(localStorage.getItem(storageKeys.profile) || '{}'));
+          } catch (error) {
+            return mergeProfile({});
+          }
+        }
+
+        function saveProfile(profile) {
+          localStorage.setItem(storageKeys.profile, JSON.stringify(profile));
+        }
+
+        function deriveInitials(name) {
+          return String(name || '')
+            .trim()
+            .split(/\s+/)
+            .filter(Boolean)
+            .slice(0, 2)
+            .map(function (part) { return part.charAt(0).toUpperCase(); })
+            .join('') || 'NN';
+        }
+
+        function hexToRgb(hex) {
+          var normalized = String(hex || '').replace('#', '');
+          var value = normalized.length === 3
+            ? normalized.split('').map(function (char) { return char + char; }).join('')
+            : normalized;
+          var int = Number.parseInt(value, 16);
+          if (Number.isNaN(int)) {
+            return '111, 134, 255';
+          }
+          return [(int >> 16) & 255, (int >> 8) & 255, int & 255].join(', ');
+        }
+
+        function getThemeColor(themeName) {
+          var match = themeOptions.find(function (item) {
+            return item.key === themeName;
+          });
+          return match ? match.color : '#6f86ff';
+        }
+
+        function applyThemeToRoot(themeName) {
+          var color = getThemeColor(themeName);
+          document.documentElement.style.setProperty('--theme-accent', color);
+          document.documentElement.style.setProperty('--theme-accent-rgb', hexToRgb(color));
+        }
+
+        function applyThemeToPreview(themeName, previewBlock) {
+          var color = getThemeColor(themeName);
+          if (previewBlock) {
+            previewBlock.style.setProperty('--theme-accent', color);
+            previewBlock.style.setProperty('--theme-accent-rgb', hexToRgb(color));
+          }
+        }
+
+        function renderSocialButtons(targetElement, profile) {
+          if (!targetElement) {
+            return;
+          }
+          var html = socialConfig
+            .filter(function (item) { return profile.socials[item.key]; })
+            .map(function (item) {
+              return '<a class="social-button" href="' + profile.socials[item.key] + '" target="_blank" rel="noopener noreferrer" aria-label="' + item.label + '" title="' + item.label + '">' +
+                '<span class="icon">' + (icons[item.icon] || '') + '</span>' +
+                '</a>';
+            })
+            .join('');
+          targetElement.innerHTML = html;
+          targetElement.style.display = html ? 'grid' : 'none';
+        }
+
+        function readFileAsDataUrl(file, options) {
+          var settings = options || {};
+          var maxSize = settings.maxSize || 1200;
+          var quality = settings.quality || 0.82;
+          return new Promise(function (resolve, reject) {
+            var reader = new FileReader();
+            reader.onload = function () {
+              var image = new Image();
+              image.onload = function () {
+                var longestSide = Math.max(image.width, image.height) || 1;
+                var scale = Math.min(1, maxSize / longestSide);
+                var width = Math.max(1, Math.round(image.width * scale));
+                var height = Math.max(1, Math.round(image.height * scale));
+                var canvas = document.createElement('canvas');
+                var context = canvas.getContext('2d');
+                canvas.width = width;
+                canvas.height = height;
+                if (!context) {
+                  reject(new Error('canvas_unavailable'));
+                  return;
+                }
+                context.drawImage(image, 0, 0, width, height);
+                resolve(canvas.toDataURL('image/jpeg', quality));
+              };
+              image.onerror = function () { reject(new Error('image_decode_failed')); };
+              image.src = String(reader.result || '');
+            };
+            reader.onerror = function () { reject(new Error('file_read_failed')); };
+            reader.readAsDataURL(file);
+          });
+        }
+
+        var form = document.getElementById('edit-profile-form');
+        var status = document.getElementById('edit-save-status');
+        var skillInput = document.getElementById('skill-input');
+        var addSkillButton = document.getElementById('add-skill-button');
+        var editorSkills = document.getElementById('editor-skills');
+        var themeColorGrid = document.getElementById('theme-color-grid');
+        var previewBlock = document.getElementById('edit-preview-block');
+
+        function updatePreview(profile) {
+          var previewName = document.getElementById('edit-preview-name');
+          var previewRole = document.getElementById('edit-preview-role');
+          var previewCompany = document.getElementById('edit-preview-company');
+          var previewAvatar = document.getElementById('edit-preview-avatar');
+          var previewAvatarImage = document.getElementById('edit-preview-avatar-image');
+          var previewAvatarText = document.getElementById('edit-preview-avatar-text');
+          var previewBanner = document.getElementById('edit-preview-banner');
+          var previewBannerImage = document.getElementById('edit-preview-banner-image');
+          var previewHeadline = document.getElementById('edit-preview-headline');
+          var previewLocation = document.getElementById('edit-preview-location');
+          var previewSkills = document.getElementById('edit-preview-skills');
+          var previewContact = document.getElementById('edit-preview-contact');
+          var previewSocials = document.getElementById('edit-preview-socials');
+          var initials = (profile.profileInitial || deriveInitials(profile.name)).slice(0, 2).toUpperCase();
+
+          if (previewBlock) {
+            previewBlock.classList.add('is-updating');
+            window.clearTimeout(updatePreview.timeoutId);
+            updatePreview.timeoutId = window.setTimeout(function () {
+              previewBlock.classList.remove('is-updating');
+            }, 200);
+          }
+
+          if (previewName) { previewName.textContent = profile.name || defaultProfile.name; }
+          if (previewRole) { previewRole.textContent = profile.role || defaultProfile.role; }
+          if (previewCompany) {
+            previewCompany.textContent = profile.company || '';
+            previewCompany.classList.toggle('is-empty', !profile.company);
+          }
+          if (previewHeadline) {
+            previewHeadline.textContent = profile.headline || '';
+            previewHeadline.classList.toggle('is-empty', !(profile.headline || '').trim());
+          }
+          if (previewLocation) {
+            previewLocation.textContent = profile.location || '';
+            previewLocation.classList.toggle('is-empty', !profile.location);
+          }
+          if (previewSkills) {
+            previewSkills.innerHTML = (profile.skills || []).map(function (skill) {
+              return '<span class="skill-chip">' + skill + '</span>';
+            }).join('');
+            previewSkills.style.display = profile.skills && profile.skills.length ? 'flex' : 'none';
+          }
+          if (previewAvatar) { previewAvatar.classList.toggle('has-image', Boolean(profile.profileImage)); }
+          if (previewAvatarImage) {
+            if (profile.profileImage) {
+              previewAvatarImage.src = profile.profileImage;
+            } else {
+              previewAvatarImage.removeAttribute('src');
+            }
+            previewAvatarImage.style.setProperty('--avatar-scale', String(profile.profileImageScale || 1));
+            previewAvatarImage.style.setProperty('--avatar-offset-y', String(profile.profileImageOffsetY || 0) + 'px');
+          }
+          if (previewAvatarText) { previewAvatarText.textContent = initials; }
+          if (previewBanner) { previewBanner.classList.toggle('has-image', Boolean(profile.bannerImage)); }
+          if (previewBannerImage) {
+            if (profile.bannerImage) {
+              previewBannerImage.src = profile.bannerImage;
+            } else {
+              previewBannerImage.removeAttribute('src');
+            }
+          }
+          if (previewContact) {
+            previewContact.textContent = (profile.phone || defaultProfile.phone) + ' • ' + (profile.email || defaultProfile.email);
+          }
+
+          applyThemeToPreview(profile.themeColor || 'blue', previewBlock);
+          renderSocialButtons(previewSocials, profile);
+        }
+
+        function renderEditorSkills(profile) {
+          if (!editorSkills) {
+            return;
+          }
+          editorSkills.innerHTML = (profile.skills || []).map(function (skill, index) {
+            return '<span class="skill-chip"><span>' + skill + '</span><button class="chip-remove" type="button" data-skill-index="' + index + '">×</button></span>';
+          }).join('');
+        }
+
+        function renderThemePicker(profile) {
+          if (!themeColorGrid) {
+            return;
+          }
+          themeColorGrid.innerHTML = themeOptions.map(function (item) {
+            var activeClass = profile.themeColor === item.key ? ' is-active' : '';
+            return '<button class="color-dot' + activeClass + '" type="button" data-theme-color="' + item.key + '" style="background:' + item.color + '" aria-label="' + item.key + ' theme" title="' + item.key + '"></button>';
+          }).join('');
+        }
+
+        function fillForm(profile) {
+          form.elements.name.value = profile.name || '';
+          form.elements.role.value = profile.role || '';
+          form.elements.headline.value = profile.headline || '';
+          form.elements.company.value = profile.company || '';
+          form.elements.location.value = profile.location || '';
+          form.elements.phone.value = profile.phone || '';
+          form.elements.email.value = profile.email || '';
+          form.elements.profileInitial.value = profile.profileInitial || '';
+          form.elements.profileImageScale.value = String(profile.profileImageScale || 1);
+          form.elements.profileImageOffsetY.value = String(profile.profileImageOffsetY || 0);
+          form.elements.instagram.value = profile.socials.instagram || '';
+          form.elements.linkedin.value = profile.socials.linkedin || '';
+          form.elements.twitter.value = profile.socials.twitter || '';
+          form.elements.youtube.value = profile.socials.youtube || '';
+          form.elements.facebook.value = profile.socials.facebook || '';
+          form.elements.website.value = profile.socials.website || '';
+          form.elements.github.value = profile.socials.github || '';
+          form.elements.telegram.value = profile.socials.telegram || '';
+          form.elements.snapchat.value = profile.socials.snapchat || '';
+          form.elements.portfolio.value = profile.socials.portfolio || '';
+        }
+
+        function readDraftFromForm(draft) {
+          draft.name = form.elements.name.value.trim();
+          draft.role = form.elements.role.value.trim();
+          draft.headline = form.elements.headline.value.trim();
+          draft.company = form.elements.company.value.trim();
+          draft.location = form.elements.location.value.trim();
+          draft.phone = form.elements.phone.value.trim();
+          draft.email = form.elements.email.value.trim();
+          draft.profileInitial = form.elements.profileInitial.value.trim().slice(0, 2).toUpperCase();
+          draft.profileImageScale = Number.parseFloat(form.elements.profileImageScale.value || '1') || 1;
+          draft.profileImageOffsetY = Number.parseInt(form.elements.profileImageOffsetY.value || '0', 10) || 0;
+          draft.socials.instagram = form.elements.instagram.value.trim();
+          draft.socials.linkedin = form.elements.linkedin.value.trim();
+          draft.socials.twitter = form.elements.twitter.value.trim();
+          draft.socials.youtube = form.elements.youtube.value.trim();
+          draft.socials.facebook = form.elements.facebook.value.trim();
+          draft.socials.website = form.elements.website.value.trim();
+          draft.socials.github = form.elements.github.value.trim();
+          draft.socials.telegram = form.elements.telegram.value.trim();
+          draft.socials.snapchat = form.elements.snapchat.value.trim();
+          draft.socials.portfolio = form.elements.portfolio.value.trim();
+        }
+
+        var savedProfile = loadProfile();
+        var currentDraft = cloneProfile(savedProfile);
+
+        setIcon('preview-edit-icon', 'edit');
+        installTapFeedback();
+        applyThemeToRoot(savedProfile.themeColor || 'blue');
+        fillForm(savedProfile);
+        renderEditorSkills(savedProfile);
+        renderThemePicker(savedProfile);
+        updatePreview(savedProfile);
+
+        document.getElementById('back-to-profile').addEventListener('click', function () {
+          window.location.href = 'index.html';
+        });
+
+        form.addEventListener('input', function () {
+          readDraftFromForm(currentDraft);
+          renderEditorSkills(currentDraft);
+          renderThemePicker(currentDraft);
+          updatePreview(currentDraft);
+          if (status) {
+            status.textContent = '';
+          }
+        });
+
+        form.elements.profileImageUpload.addEventListener('change', function (event) {
+          var file = event.target.files && event.target.files[0];
+          if (!file) {
+            return;
+          }
+          readFileAsDataUrl(file, { maxSize: 720, quality: 0.84 })
+            .then(function (dataUrl) {
+              currentDraft.profileImage = dataUrl;
+              updatePreview(currentDraft);
+              if (status) {
+                status.textContent = '';
+              }
+            })
+            .catch(function () {
+              if (status) {
+                status.textContent = 'Image upload failed';
+              }
+            });
+        });
+
+        form.elements.bannerImageUpload.addEventListener('change', function (event) {
+          var file = event.target.files && event.target.files[0];
+          if (!file) {
+            return;
+          }
+          readFileAsDataUrl(file, { maxSize: 1400, quality: 0.82 })
+            .then(function (dataUrl) {
+              currentDraft.bannerImage = dataUrl;
+              updatePreview(currentDraft);
+              if (status) {
+                status.textContent = '';
+              }
+            })
+            .catch(function () {
+              if (status) {
+                status.textContent = 'Image upload failed';
+              }
+            });
+        });
+
+        form.addEventListener('submit', function (event) {
+          event.preventDefault();
+          readDraftFromForm(currentDraft);
+          savedProfile = cloneProfile(currentDraft);
+          saveProfile(savedProfile);
+          applyThemeToRoot(savedProfile.themeColor || 'blue');
+          updatePreview(savedProfile);
+          if (status) {
+            status.textContent = 'Saved';
+          }
+        });
+
+        addSkillButton.addEventListener('click', function () {
+          var value = skillInput.value.trim();
+          if (!value) {
+            return;
+          }
+          if (currentDraft.skills.indexOf(value) === -1) {
+            currentDraft.skills.push(value);
+          }
+          skillInput.value = '';
+          renderEditorSkills(currentDraft);
+          renderThemePicker(currentDraft);
+          updatePreview(currentDraft);
+          if (status) {
+            status.textContent = '';
+          }
+        });
+
+        skillInput.addEventListener('keydown', function (event) {
+          if (event.key === 'Enter') {
+            event.preventDefault();
+            addSkillButton.click();
+          }
+        });
+
+        editorSkills.addEventListener('click', function (event) {
+          var target = event.target.closest('[data-skill-index]');
+          var index;
+          if (!target) {
+            return;
+          }
+          index = Number.parseInt(target.getAttribute('data-skill-index') || '-1', 10);
+          if (index < 0) {
+            return;
+          }
+          currentDraft.skills.splice(index, 1);
+          renderEditorSkills(currentDraft);
+          renderThemePicker(currentDraft);
+          updatePreview(currentDraft);
+          if (status) {
+            status.textContent = '';
+          }
+        });
+
+        themeColorGrid.addEventListener('click', function (event) {
+          var target = event.target.closest('[data-theme-color]');
+          if (!target) {
+            return;
+          }
+          currentDraft.themeColor = target.getAttribute('data-theme-color') || 'blue';
+          renderThemePicker(currentDraft);
+          updatePreview(currentDraft);
+          if (status) {
+            status.textContent = '';
+          }
+        });
+      })();
+    </script>
+  </body>
+</html>
