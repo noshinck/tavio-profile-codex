@@ -25,7 +25,7 @@
         margin: 0;
         min-height: 100vh;
         display: flex;
-        align-items: center;
+        align-items: flex-start;
         justify-content: center;
         padding: 20px;
         font-family: Arial, Helvetica, sans-serif;
@@ -114,6 +114,34 @@
       .panel-wide {
         max-width: 1100px;
         padding: 28px;
+      }
+
+      .page-shell {
+        position: relative;
+        z-index: 1;
+        width: 100%;
+        max-width: 1100px;
+        display: grid;
+        gap: 28px;
+      }
+
+      .page-shell > .profile-panel {
+        margin: 0 auto;
+      }
+
+      #dashboard-section {
+        margin-top: 4px;
+      }
+
+      .dashboard-section-header {
+        margin-bottom: 24px;
+      }
+
+      .analytics-grid {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 16px;
+        margin-top: 24px;
       }
 
       .eyebrow {
@@ -1118,6 +1146,10 @@
           gap: 20px;
         }
 
+        .analytics-grid {
+          grid-template-columns: 1fr;
+        }
+
         .dashboard-title {
           font-size: 28px;
         }
@@ -1129,6 +1161,10 @@
         .modal-content {
           padding: 16px;
         }
+
+        .page-shell {
+          gap: 20px;
+        }
       }
     </style>
   </head>
@@ -1139,183 +1175,162 @@
       <div class="ambient-orb three"></div>
     </div>
 
-    <main class="panel profile-panel">
-      <section class="profile-block">
-        <div class="identity-banner" id="profile-banner">
-          <img class="banner-image" id="profile-banner-image" alt="" />
-          <button class="edit-trigger" id="edit-profile-trigger" type="button" aria-label="Edit Profile" title="Edit Profile">
-            <span class="icon" id="edit-trigger-icon"></span>
-          </button>
-        </div>
-        <div class="identity-avatar-wrap">
-          <div class="avatar" id="profile-avatar">
-            <img class="avatar-image" id="profile-avatar-image" alt="" />
-            <span class="avatar-text" id="profile-avatar-text">NN</span>
+    <div class="page-shell">
+      <main class="panel profile-panel">
+        <section class="profile-block">
+          <div class="identity-banner" id="profile-banner">
+            <img class="banner-image" id="profile-banner-image" alt="" />
           </div>
+          <div class="identity-avatar-wrap">
+            <div class="avatar" id="profile-avatar">
+              <img class="avatar-image" id="profile-avatar-image" alt="" />
+              <span class="avatar-text" id="profile-avatar-text">NN</span>
+            </div>
+          </div>
+          <div class="identity-stack">
+            <h1 class="profile-name" id="profile-name">noshin naved ck</h1>
+            <div class="role" id="profile-role-text">ceo</div>
+            <div class="company identity-line is-empty" id="profile-company"></div>
+            <div class="headline identity-line" id="profile-headline">Tap to save contact instantly.</div>
+            <div class="location identity-line is-empty" id="profile-location"></div>
+            <div class="skills-row" id="profile-skills" style="display: none;"></div>
+          </div>
+        </section>
+
+        <a class="primary-button" id="save-contact-button" href="#">
+          <span class="icon" id="save-contact-icon"></span>
+          <span class="save-text">Save My Contact</span>
+        </a>
+
+        <div class="save-trust" id="save-trust">Safe • No app needed</div>
+        <div class="save-helper" id="save-helper"></div>
+
+        <div class="action-section" id="action-section">
+          <div class="action-grid" id="action-grid"></div>
         </div>
-        <div class="identity-stack">
-          <h1 class="profile-name" id="profile-name">noshin naved ck</h1>
-          <div class="role" id="profile-role-text">ceo</div>
-          <div class="company identity-line is-empty" id="profile-company"></div>
-          <div class="headline identity-line" id="profile-headline">Tap to save contact instantly.</div>
-          <div class="location identity-line is-empty" id="profile-location"></div>
-          <div class="skills-row" id="profile-skills" style="display: none;"></div>
+
+        <div class="social-grid" id="social-grid"></div>
+
+        <section class="share-back" id="share-back-section">
+          <h2 class="share-title">Saved ✔ You&apos;re now connected</h2>
+          <p class="share-note">Want me to save your contact too?</p>
+          <form class="form share-form" id="share-back-form">
+            <label class="field">
+              <input class="input share-input" id="share-name" type="text" name="name" placeholder="Your name" required />
+            </label>
+            <label class="field">
+              <input class="input share-input" id="share-phone" type="tel" name="phone" placeholder="Phone" required />
+            </label>
+            <label class="field">
+              <input class="input share-input" id="share-email" type="email" name="email" placeholder="Email" required />
+            </label>
+            <button class="primary-button share-button" id="share-button" type="button">
+              <span class="icon" id="share-button-icon"></span>
+              <span>Share My Contact</span>
+            </button>
+            <div class="share-status" id="share-back-status"></div>
+          </form>
+          <div class="share-speed">Takes 5 seconds</div>
+        </section>
+
+        <div class="footer">ABCD123</div>
+      </main>
+
+      <section id="dashboard-section" class="panel panel-wide">
+        <div class="dashboard-section-header">
+          <h2 class="dashboard-title">Edit &amp; Insights</h2>
+          <p class="dashboard-subtitle">Update your public card details, preview changes live, and track profile activity stored in this browser.</p>
         </div>
-      </section>
 
-      <a class="primary-button" id="save-contact-button" href="#">
-        <span class="icon" id="save-contact-icon"></span>
-        <span class="save-text">Save My Contact</span>
-      </a>
+        <div id="edit-panel">
+          <div class="dashboard-shell">
+            <div class="dashboard-header">
+              <h2 class="dashboard-title">Edit Profile</h2>
+              <p class="dashboard-subtitle">Update your public card details and preview changes live.</p>
+            </div>
+            <div class="edit-grid">
+              <div class="edit-column">
+                <div class="dashboard-card edit-form-card">
+                  <form class="form edit-form" id="edit-profile-form">
+                    <section class="form-section">
+                      <p class="section-title">Bio</p>
+                      <label class="field"><span class="field-label">Name</span><input class="input" name="name" type="text" placeholder="Full name" /></label>
+                      <label class="field"><span class="field-label">Role</span><input class="input" name="role" type="text" placeholder="Role" /></label>
+                      <label class="field"><span class="field-label">Headline</span><input class="input" name="headline" type="text" placeholder="Tap to save contact instantly." /></label>
+                      <label class="field"><span class="field-label">Company</span><input class="input" name="company" type="text" placeholder="Grovix" /></label>
+                      <label class="field"><span class="field-label">Location</span><input class="input" name="location" type="text" placeholder="Bangalore, India" /></label>
+                      <label class="field"><span class="field-label">Phone</span><input class="input" name="phone" type="tel" placeholder="Phone" /></label>
+                      <label class="field"><span class="field-label">Email</span><input class="input" name="email" type="email" placeholder="Email" /></label>
+                      <label class="field"><span class="field-label">Profile Initial</span><input class="input" name="profileInitial" type="text" maxlength="2" placeholder="NN" /></label>
+                      <label class="field"><span class="field-label">Upload Profile Image</span><input class="input" name="profileImageUpload" type="file" accept="image/*" /></label>
+                      <label class="field"><span class="field-label">Profile Image Zoom</span><input class="input range-input" name="profileImageScale" type="range" min="1" max="2.2" step="0.01" /></label>
+                      <label class="field"><span class="field-label">Profile Image Position</span><input class="input range-input" name="profileImageOffsetY" type="range" min="-32" max="32" step="1" /></label>
+                      <label class="field"><span class="field-label">Upload Banner Image</span><input class="input" name="bannerImageUpload" type="file" accept="image/*" /></label>
+                    </section>
 
-      <div class="save-trust" id="save-trust">Safe • No app needed</div>
-      <div class="save-helper" id="save-helper"></div>
-
-      <div class="action-section" id="action-section">
-        <div class="action-grid" id="action-grid"></div>
-      </div>
-
-      <div class="social-grid" id="social-grid"></div>
-
-      <section class="share-back" id="share-back-section">
-        <h2 class="share-title">Saved ✔ You&apos;re now connected</h2>
-        <p class="share-note">Want me to save your contact too?</p>
-        <form class="form share-form" id="share-back-form">
-          <label class="field">
-            <input class="input share-input" id="share-name" type="text" name="name" placeholder="Your name" required />
-          </label>
-          <label class="field">
-            <input class="input share-input" id="share-phone" type="tel" name="phone" placeholder="Phone" required />
-          </label>
-          <label class="field">
-            <input class="input share-input" id="share-email" type="email" name="email" placeholder="Email" required />
-          </label>
-          <button class="primary-button share-button" id="share-button" type="button">
-            <span class="icon" id="share-button-icon"></span>
-            <span>Share My Contact</span>
-          </button>
-          <div class="share-status" id="share-back-status"></div>
-        </form>
-        <div class="share-speed">Takes 5 seconds</div>
-      </section>
-
-      <div class="mini-analytics" aria-label="Analytics">
-        <div class="mini-stat">
-          <span class="mini-stat-value" id="views-count">0</span>
-          <span class="mini-stat-label">Views</span>
-        </div>
-        <div class="mini-stat">
-          <span class="mini-stat-value" id="saves-count">0</span>
-          <span class="mini-stat-label">Saves</span>
-        </div>
-        <div class="mini-stat">
-          <span class="mini-stat-value" id="clicks-count">0</span>
-          <span class="mini-stat-label">Actions</span>
-        </div>
-      </div>
-
-      <div class="footer">ABCD123</div>
-
-      <div class="modal-backdrop" id="edit-profile-modal" aria-hidden="true">
-        <div class="modal-shell">
-          <button class="modal-close" id="edit-profile-close" type="button" aria-label="Close edit profile">
-            <span class="icon" id="edit-close-icon"></span>
-          </button>
-          <div class="modal-content">
-            <div class="dashboard-shell">
-              <div class="dashboard-header">
-                <h1 class="dashboard-title">Edit Profile</h1>
-                <p class="dashboard-subtitle">Update your public card details and preview changes live.</p>
-              </div>
-              <div class="edit-grid">
-                <div class="edit-column">
-                  <div class="dashboard-card edit-form-card">
-                    <form class="form edit-form" id="edit-profile-form">
-                      <section class="form-section">
-                        <p class="section-title">Bio</p>
-                        <label class="field"><span class="field-label">Name</span><input class="input" name="name" type="text" placeholder="Full name" /></label>
-                        <label class="field"><span class="field-label">Role</span><input class="input" name="role" type="text" placeholder="Role" /></label>
-                        <label class="field"><span class="field-label">Headline</span><input class="input" name="headline" type="text" placeholder="Tap to save contact instantly." /></label>
-                        <label class="field"><span class="field-label">Company</span><input class="input" name="company" type="text" placeholder="Grovix" /></label>
-                        <label class="field"><span class="field-label">Location</span><input class="input" name="location" type="text" placeholder="Bangalore, India" /></label>
-                        <label class="field"><span class="field-label">Phone</span><input class="input" name="phone" type="tel" placeholder="Phone" /></label>
-                        <label class="field"><span class="field-label">Email</span><input class="input" name="email" type="email" placeholder="Email" /></label>
-                        <label class="field"><span class="field-label">Profile Initial</span><input class="input" name="profileInitial" type="text" maxlength="2" placeholder="NN" /></label>
-                        <label class="field"><span class="field-label">Upload Profile Image</span><input class="input" name="profileImageUpload" type="file" accept="image/*" /></label>
-                        <label class="field"><span class="field-label">Profile Image Zoom</span><input class="input range-input" name="profileImageScale" type="range" min="1" max="2.2" step="0.01" /></label>
-                        <label class="field"><span class="field-label">Profile Image Position</span><input class="input range-input" name="profileImageOffsetY" type="range" min="-32" max="32" step="1" /></label>
-                        <label class="field"><span class="field-label">Upload Banner Image</span><input class="input" name="bannerImageUpload" type="file" accept="image/*" /></label>
-                      </section>
-
-                      <section class="form-section">
-                        <p class="section-title">Skills</p>
-                        <div class="skills-builder">
-                          <div class="skills-input-row">
-                            <input class="input" id="skill-input" type="text" placeholder="Add a skill" />
-                            <button class="inline-button" id="add-skill-button" type="button">Add</button>
-                          </div>
-                          <div class="skills-row" id="editor-skills"></div>
+                    <section class="form-section">
+                      <p class="section-title">Skills</p>
+                      <div class="skills-builder">
+                        <div class="skills-input-row">
+                          <input class="input" id="skill-input" type="text" placeholder="Add a skill" />
+                          <button class="inline-button" id="add-skill-button" type="button">Add</button>
                         </div>
-                      </section>
+                        <div class="skills-row" id="editor-skills"></div>
+                      </div>
+                    </section>
 
-                      <section class="form-section">
-                        <p class="section-title">Social Links</p>
-                        <label class="field"><span class="field-label">Instagram</span><input class="input" name="instagram" type="url" placeholder="https://instagram.com/..." /></label>
-                        <label class="field"><span class="field-label">LinkedIn</span><input class="input" name="linkedin" type="url" placeholder="https://linkedin.com/in/..." /></label>
-                        <label class="field"><span class="field-label">Twitter (X)</span><input class="input" name="twitter" type="url" placeholder="https://x.com/..." /></label>
-                        <label class="field"><span class="field-label">YouTube</span><input class="input" name="youtube" type="url" placeholder="https://youtube.com/..." /></label>
-                        <label class="field"><span class="field-label">Facebook</span><input class="input" name="facebook" type="url" placeholder="https://facebook.com/..." /></label>
-                        <label class="field"><span class="field-label">Website</span><input class="input" name="website" type="url" placeholder="https://example.com" /></label>
-                        <label class="field"><span class="field-label">GitHub</span><input class="input" name="github" type="url" placeholder="https://github.com/..." /></label>
-                        <label class="field"><span class="field-label">Telegram</span><input class="input" name="telegram" type="url" placeholder="https://t.me/..." /></label>
-                        <label class="field"><span class="field-label">Snapchat</span><input class="input" name="snapchat" type="url" placeholder="https://snapchat.com/add/..." /></label>
-                        <label class="field"><span class="field-label">Portfolio link</span><input class="input" name="portfolio" type="url" placeholder="https://portfolio.com" /></label>
-                      </section>
+                    <section class="form-section">
+                      <p class="section-title">Social Links</p>
+                      <label class="field"><span class="field-label">Instagram</span><input class="input" name="instagram" type="url" placeholder="https://instagram.com/..." /></label>
+                      <label class="field"><span class="field-label">LinkedIn</span><input class="input" name="linkedin" type="url" placeholder="https://linkedin.com/in/..." /></label>
+                      <label class="field"><span class="field-label">Twitter (X)</span><input class="input" name="twitter" type="url" placeholder="https://x.com/..." /></label>
+                      <label class="field"><span class="field-label">YouTube</span><input class="input" name="youtube" type="url" placeholder="https://youtube.com/..." /></label>
+                      <label class="field"><span class="field-label">Facebook</span><input class="input" name="facebook" type="url" placeholder="https://facebook.com/..." /></label>
+                      <label class="field"><span class="field-label">Website</span><input class="input" name="website" type="url" placeholder="https://example.com" /></label>
+                      <label class="field"><span class="field-label">GitHub</span><input class="input" name="github" type="url" placeholder="https://github.com/..." /></label>
+                      <label class="field"><span class="field-label">Telegram</span><input class="input" name="telegram" type="url" placeholder="https://t.me/..." /></label>
+                      <label class="field"><span class="field-label">Snapchat</span><input class="input" name="snapchat" type="url" placeholder="https://snapchat.com/add/..." /></label>
+                      <label class="field"><span class="field-label">Portfolio link</span><input class="input" name="portfolio" type="url" placeholder="https://portfolio.com" /></label>
+                    </section>
 
-                      <section class="form-section">
-                        <p class="section-title">Style</p>
-                        <div class="color-grid" id="theme-color-grid"></div>
-                      </section>
+                    <section class="form-section">
+                      <p class="section-title">Style</p>
+                      <div class="color-grid" id="theme-color-grid"></div>
+                    </section>
 
-                      <button class="primary-button edit-save-button" type="submit">Save Profile</button>
-                      <div class="share-status" id="edit-save-status"></div>
-                    </form>
-                  </div>
+                    <button class="primary-button edit-save-button" type="submit">Save Profile</button>
+                    <div class="share-status" id="edit-save-status"></div>
+                  </form>
                 </div>
+              </div>
 
-                <div class="edit-column preview-column">
-                  <div class="preview-wrap">
-                    <div class="dashboard-card preview-card">
-                      <div class="field-label">Live Preview</div>
-                      <div class="profile-block preview-fade" id="edit-preview-block" style="margin-top: 18px;">
-                        <div class="identity-banner" id="edit-preview-banner">
-                          <img class="banner-image" id="edit-preview-banner-image" alt="" />
-                          <button class="edit-trigger" type="button" aria-label="Edit Profile" title="Edit Profile">
-                            <span class="icon" id="preview-edit-icon"></span>
-                          </button>
-                        </div>
-                        <div class="identity-avatar-wrap">
-                          <div class="avatar" id="edit-preview-avatar">
-                            <img class="avatar-image" id="edit-preview-avatar-image" alt="" />
-                            <span class="avatar-text" id="edit-preview-avatar-text">NN</span>
-                          </div>
-                        </div>
-                        <div class="identity-stack">
-                          <h2 class="profile-name" id="edit-preview-name">noshin naved ck</h2>
-                          <div class="role" id="edit-preview-role">ceo</div>
-                          <div class="company identity-line is-empty" id="edit-preview-company"></div>
-                          <div class="headline identity-line" id="edit-preview-headline">Tap to save contact instantly.</div>
-                          <div class="location identity-line is-empty" id="edit-preview-location"></div>
-                          <div class="skills-row" id="edit-preview-skills" style="display: none;"></div>
-                        </div>
-                        <div class="bio" id="edit-preview-contact">+91 98765 43210 • noshin@example.com</div>
-                        <div class="social-grid" id="edit-preview-socials" style="margin-top: 16px; display: none;"></div>
-                        <div class="mini-analytics">
-                          <div class="mini-stat"><span class="mini-stat-value">12</span><span class="mini-stat-label">Views</span></div>
-                          <div class="mini-stat"><span class="mini-stat-value">5</span><span class="mini-stat-label">Saves</span></div>
-                          <div class="mini-stat"><span class="mini-stat-value">3</span><span class="mini-stat-label">Actions</span></div>
+              <div class="edit-column preview-column">
+                <div class="preview-wrap">
+                  <div class="dashboard-card preview-card">
+                    <div class="field-label">Live Preview</div>
+                    <div class="profile-block preview-fade" id="edit-preview-block" style="margin-top: 18px;">
+                      <div class="identity-banner" id="edit-preview-banner">
+                        <img class="banner-image" id="edit-preview-banner-image" alt="" />
+                        <button class="edit-trigger" type="button" aria-label="Edit Profile" title="Edit Profile">
+                          <span class="icon" id="preview-edit-icon"></span>
+                        </button>
+                      </div>
+                      <div class="identity-avatar-wrap">
+                        <div class="avatar" id="edit-preview-avatar">
+                          <img class="avatar-image" id="edit-preview-avatar-image" alt="" />
+                          <span class="avatar-text" id="edit-preview-avatar-text">NN</span>
                         </div>
                       </div>
+                      <div class="identity-stack">
+                        <h2 class="profile-name" id="edit-preview-name">noshin naved ck</h2>
+                        <div class="role" id="edit-preview-role">ceo</div>
+                        <div class="company identity-line is-empty" id="edit-preview-company"></div>
+                        <div class="headline identity-line" id="edit-preview-headline">Tap to save contact instantly.</div>
+                        <div class="location identity-line is-empty" id="edit-preview-location"></div>
+                        <div class="skills-row" id="edit-preview-skills" style="display: none;"></div>
+                      </div>
+                      <div class="bio" id="edit-preview-contact">+91 98765 43210 • noshin@example.com</div>
+                      <div class="social-grid" id="edit-preview-socials" style="margin-top: 16px; display: none;"></div>
                     </div>
                   </div>
                 </div>
@@ -1323,8 +1338,32 @@
             </div>
           </div>
         </div>
-      </div>
-    </main>
+
+        <div id="analytics-panel">
+          <div class="dashboard-header" style="margin-top: 32px;">
+            <h2 class="dashboard-title">Analytics Dashboard</h2>
+            <p class="dashboard-subtitle">Views, saves, and action clicks are tracked with localStorage and stay frontend-only.</p>
+          </div>
+          <div class="analytics-grid" aria-label="Analytics">
+            <div class="dashboard-card">
+              <div class="dashboard-label">Views</div>
+              <div class="dashboard-value" id="views-count">0</div>
+              <div class="dashboard-note">How many times this profile was opened in the browser.</div>
+            </div>
+            <div class="dashboard-card">
+              <div class="dashboard-label">Saves</div>
+              <div class="dashboard-value" id="saves-count">0</div>
+              <div class="dashboard-note">vCard saves and shared contact saves recorded locally.</div>
+            </div>
+            <div class="dashboard-card">
+              <div class="dashboard-label">Actions</div>
+              <div class="dashboard-value" id="clicks-count">0</div>
+              <div class="dashboard-note">Call, email, WhatsApp, and social link clicks.</div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
 
     <script>
       (function () {
@@ -1412,10 +1451,8 @@
           }
         }
 
-        setIcon('edit-trigger-icon', 'edit');
         setIcon('save-contact-icon', 'download');
         setIcon('share-button-icon', 'download');
-        setIcon('edit-close-icon', 'close');
         setIcon('preview-edit-icon', 'edit');
 
         var saveButton = document.getElementById('save-contact-button');
@@ -1430,9 +1467,6 @@
         var actionGrid = document.getElementById('action-grid');
         var actionSection = document.getElementById('action-section');
         var socialGrid = document.getElementById('social-grid');
-        var editTrigger = document.getElementById('edit-profile-trigger');
-        var editModal = document.getElementById('edit-profile-modal');
-        var editClose = document.getElementById('edit-profile-close');
         var form = document.getElementById('edit-profile-form');
         var status = document.getElementById('edit-save-status');
         var skillInput = document.getElementById('skill-input');
@@ -1938,26 +1972,6 @@
           }
         }
 
-        function openEditModal() {
-          currentDraft = cloneProfile(savedProfile);
-          fillForm(currentDraft);
-          renderEditorSkills(currentDraft);
-          renderThemePicker(currentDraft);
-          updatePreview(currentDraft);
-          if (status) {
-            status.textContent = '';
-          }
-          editModal.classList.add('is-open');
-          editModal.setAttribute('aria-hidden', 'false');
-          document.body.style.overflow = 'hidden';
-        }
-
-        function closeEditModal() {
-          editModal.classList.remove('is-open');
-          editModal.setAttribute('aria-hidden', 'true');
-          document.body.style.overflow = '';
-        }
-
         function saveSharedContact() {
           var name = document.getElementById('share-name').value.trim();
           var phone = document.getElementById('share-phone').value.trim();
@@ -2056,28 +2070,6 @@
         if (shareButton) {
           shareButton.addEventListener('click', saveSharedContact);
         }
-
-        if (editTrigger) {
-          editTrigger.addEventListener('click', openEditModal);
-        }
-
-        if (editClose) {
-          editClose.addEventListener('click', closeEditModal);
-        }
-
-        if (editModal) {
-          editModal.addEventListener('click', function (event) {
-            if (event.target === editModal) {
-              closeEditModal();
-            }
-          });
-        }
-
-        document.addEventListener('keydown', function (event) {
-          if (event.key === 'Escape' && editModal && editModal.classList.contains('is-open')) {
-            closeEditModal();
-          }
-        });
 
         if (form) {
           form.addEventListener('input', function () {
